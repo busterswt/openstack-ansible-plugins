@@ -40,7 +40,6 @@ from ansible import constants as C
 from ansible import errors
 from ansible.parsing.yaml.dumper import AnsibleDumper
 
-import sys
 
 CONFIG_TYPES = {
     'ini': 'return_config_overrides_ini',
@@ -302,7 +301,7 @@ class ActionModule(ActionBase):
         except Exception:
             config = ConfigTemplateParser(dict_type=MultiKeyDict)
 
-        config_object = io.StringIO(resultant)
+        config_object = io.BytesIO(str(resultant))
         config.readfp(config_object)
         for section, items in config_overrides.items():
             # If the items value is not a dictionary it is assumed that the
@@ -337,12 +336,12 @@ class ActionModule(ActionBase):
         else:
             config_object.close()
 
-        resultant_stringio = io.StringIO()
+        resultant_bytesio = io.BytesIO()
         try:
-            config.write(resultant_stringio)
-            return resultant_stringio.getvalue()
+            config.write(resultant_bytesio)
+            return resultant_bytesio.getvalue()
         finally:
-            resultant_stringio.close()
+            resultant_bytesio.close()
 
     @staticmethod
     def _option_write(config, section, key, value):
