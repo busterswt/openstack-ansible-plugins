@@ -40,8 +40,6 @@ from ansible import constants as C
 from ansible import errors
 from ansible.parsing.yaml.dumper import AnsibleDumper
 
-import sys
-
 CONFIG_TYPES = {
     'ini': 'return_config_overrides_ini',
     'json': 'return_config_overrides_json',
