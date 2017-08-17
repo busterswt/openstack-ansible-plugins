@@ -301,7 +301,7 @@ class ActionModule(ActionBase):
         except Exception:
             config = ConfigTemplateParser(dict_type=MultiKeyDict)
 
-        config_object = io.BytesIO(str(resultant))
+        config_object = io.StringIO(resultant)
         config.readfp(config_object)
         for section, items in config_overrides.items():
             # If the items value is not a dictionary it is assumed that the
@@ -336,12 +336,12 @@ class ActionModule(ActionBase):
         else:
             config_object.close()
 
-        resultant_bytesio = io.BytesIO()
+        resultant_stringio = io.StringIO()
         try:
-            config.write(resultant_bytesio)
-            return resultant_bytesio.getvalue()
+            config.write(resultant_stringio)
+            return resultant_stringio.getvalue()
         finally:
-            resultant_bytesio.close()
+            resultant_stringio.close()
 
     @staticmethod
     def _option_write(config, section, key, value):
