@@ -149,6 +149,10 @@ EXAMPLES = """
 #         "network_vxlan_ranges": "1:1000",
 #         "network_vxlan_ranges_list": [
 #             "1:1000"
+#         ],
+#         "network_geneve_ranges": "1:1000",
+#         "network_geneve_ranges_list": [
+#             "1:1000"
 #         ]
 # }
 """
@@ -164,6 +168,7 @@ class ProviderNetworksParsing(object):
         self.module = module
         self.network_vlan_ranges = list()
         self.network_vxlan_ranges = list()
+        self.network_geneve_ranges = list()
         self.network_flat_networks = list()
         self.network_mappings = list()
         self.network_types = list()
@@ -195,6 +200,10 @@ class ProviderNetworksParsing(object):
                 if "vxlan" not in self.network_types:
                     self.network_types.append('vxlan')
                     self.network_vxlan_ranges.append(net['network']['range'])
+            elif net['network']['type'] == "geneve":
+                if "geneve" not in self.network_types:
+                    self.network_types.append('geneve')
+                    self.network_geneve_ranges.append(net['network']['range'])
             elif net['network']['type'] == "flat":
                 if "flat" not in self.network_types:
                     self.network_types.append('flat')
@@ -272,6 +281,8 @@ def main():
             'network_vlan_ranges_list': pnp.network_vlan_ranges,
             'network_vxlan_ranges': ','.join(pnp.network_vxlan_ranges),
             'network_vxlan_ranges_list': pnp.network_vxlan_ranges,
+            'network_geneve_ranges': ','.join(pnp.network_geneve_ranges),
+            'network_geneve_ranges_list': pnp.network_geneve_ranges,
             'network_flat_networks': ','.join(pnp.network_flat_networks),
             'network_flat_networks_list': pnp.network_flat_networks,
             'network_mappings': ','.join(pnp.network_mappings),
